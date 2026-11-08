@@ -1,0 +1,2066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Vocabulary Learning Tool - 6A Unit 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   GLOBAL STYLES & CSS VARIABLES
+   ============================================================ */
+:root {
+  --mint: #A8E6CF;
+  --mint-dark: #7FD3B5;
+  --coral: #FF8B94;
+  --coral-dark: #FF6B76;
+  --gray-warm: #F5F5F5;
+  --gray-card: #FFFFFF;
+  --text-dark: #2D3436;
+  --text-mid: #636E72;
+  --text-light: #B2BEC3;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: linear-gradient(135deg, #f0fdf9 0%, #e8f8f2 50%, #fef0f0 100%);
+  min-height: 100vh;
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   APP CONTAINER
+   ============================================================ */
+#app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px;
+  min-height: 100vh;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: var(--gray-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.header-title {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-title span {
+  font-size: 1.6rem;
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  user-select: none;
+}
+
+.btn:active { transform: scale(0.95); }
+
+.btn-primary {
+  background: var(--mint);
+  color: var(--text-dark);
+  box-shadow: var(--shadow-sm);
+}
+.btn-primary:hover { background: var(--mint-dark); }
+
+.btn-coral {
+  background: var(--coral);
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
+.btn-coral:hover { background: var(--coral-dark); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-mid);
+  border: 2px solid var(--text-light);
+}
+.btn-ghost:hover { border-color: var(--mint-dark); color: var(--mint-dark); }
+
+.btn-sm {
+  padding: 6px 14px;
+  font-size: 0.85rem;
+}
+
+.btn-icon {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  justify-content: center;
+  font-size: 1.2rem;
+  border-radius: 50%;
+}
+
+/* ============================================================
+   PART SELECTOR (Student sees unlocked only)
+   ============================================================ */
+.part-selector {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.part-card {
+  flex: 1;
+  min-width: 100px;
+  background: var(--gray-card);
+  border-radius: var(--radius);
+  padding: 14px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  border: 3px solid transparent;
+}
+
+.part-card.active {
+  border-color: var(--mint-dark);
+  background: linear-gradient(135deg, #E8FAF3, #FFFFFF);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.part-card.locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.part-card.locked .lock-icon {
+  font-size: 1.8rem;
+  display: block;
+}
+
+.part-num {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.part-name {
+  font-size: 1.1rem;
+  font-weight: 900;
+  margin-top: 4px;
+}
+
+.part-progress {
+  margin-top: 6px;
+  font-size: 0.75rem;
+  color: var(--text-mid);
+}
+
+/* ============================================================
+   TAB NAVIGATION
+   ============================================================ */
+.tab-nav {
+  display: flex;
+  gap: 4px;
+  background: var(--gray-card);
+  border-radius: var(--radius);
+  padding: 6px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 12px 8px;
+  text-align: center;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border: none;
+  background: transparent;
+  color: var(--text-mid);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.tab-btn.active {
+  background: var(--mint);
+  color: var(--text-dark);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ============================================================
+   VIEW PANELS
+   ============================================================ */
+.view-panel {
+  display: none;
+  animation: fadeIn 0.4s ease;
+}
+
+.view-panel.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   LEARN VIEW - Word Card
+   ============================================================ */
+.word-card {
+  background: var(--gray-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.word-image-area {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  background: linear-gradient(135deg, var(--mint), #d4f5e9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.word-image-area img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.word-nav-overlay {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 12px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.word-nav-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.85);
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  pointer-events: all;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.word-nav-btn:active { transform: scale(0.9); }
+
+.word-content {
+  padding: 20px;
+}
+
+.word-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.word-text {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--text-dark);
+}
+
+.word-phonetic {
+  font-size: 1rem;
+  color: var(--text-mid);
+  font-weight: 600;
+}
+
+.audio-controls {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.audio-btn {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 8px 14px;
+  border: 2px solid var(--mint);
+  border-radius: 20px;
+  background: white;
+  color: var(--text-dark);
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.audio-btn:hover {
+  background: var(--mint);
+}
+
+.audio-btn:active { transform: scale(0.95); }
+
+.word-chinese {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--coral-dark);
+  margin-bottom: 12px;
+  cursor: pointer;
+  display: inline-block;
+  padding: 4px 12px;
+  background: #FFF5F5;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+}
+
+.word-chinese.hidden {
+  filter: blur(8px);
+  user-select: none;
+}
+
+.example-box {
+  background: var(--gray-warm);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-top: 12px;
+}
+
+.example-en {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 6px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: var(--transition);
+}
+
+.example-en:hover { background: var(--mint); }
+
+.example-zh {
+  font-size: 0.9rem;
+  color: var(--text-mid);
+  padding: 0 10px;
+}
+
+.example-zh.hidden {
+  display: none;
+}
+
+/* Word indicator dots */
+.word-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.word-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-light);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.word-dot.active {
+  background: var(--coral);
+  transform: scale(1.3);
+}
+
+/* Mastery buttons */
+.mastery-controls {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 2px dashed var(--text-light);
+}
+
+/* ============================================================
+   QUIZ VIEW
+   ============================================================ */
+.quiz-container {
+  background: var(--gray-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  padding: 24px;
+  text-align: center;
+}
+
+.quiz-image {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  margin: 0 auto 16px;
+  display: block;
+  box-shadow: var(--shadow-sm);
+}
+
+.quiz-play-btn {
+  margin-bottom: 20px;
+}
+
+.quiz-input-area {
+  margin-bottom: 20px;
+}
+
+.quiz-input {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 12px 20px;
+  border: 3px solid var(--text-light);
+  border-radius: var(--radius-sm);
+  width: 100%;
+  max-width: 300px;
+  outline: none;
+  transition: var(--transition);
+}
+
+.quiz-input:focus {
+  border-color: var(--mint-dark);
+}
+
+.quiz-input.correct {
+  border-color: #55EFC4;
+  background: #E8FAF3;
+}
+
+.quiz-input.wrong {
+  border-color: var(--coral);
+  background: #FFF5F5;
+  animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-10px); }
+  40% { transform: translateX(10px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
+
+.quiz-feedback {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-top: 10px;
+  min-height: 24px;
+}
+
+.quiz-feedback.correct { color: #00B894; }
+.quiz-feedback.wrong { color: var(--coral-dark); }
+
+.quiz-progress {
+  font-size: 0.9rem;
+  color: var(--text-mid);
+  margin-bottom: 12px;
+}
+
+/* ============================================================
+   GAME VIEW
+   ============================================================ */
+.game-selector {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.game-select-btn {
+  flex: 1;
+  min-width: 120px;
+  background: var(--gray-card);
+  border: 3px solid transparent;
+  border-radius: var(--radius);
+  padding: 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.game-select-btn.active {
+  border-color: var(--coral);
+  background: linear-gradient(135deg, #FFF5F5, #FFFFFF);
+}
+
+.game-select-icon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.game-select-name {
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+/* Spelling Drag Game */
+.spell-container {
+  background: var(--gray-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  padding: 24px;
+  text-align: center;
+}
+
+.spell-image {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  margin: 0 auto 12px;
+  display: block;
+}
+
+.spell-hint {
+  font-size: 0.9rem;
+  color: var(--text-mid);
+  margin-bottom: 8px;
+}
+
+.spell-slots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin: 16px 0;
+  flex-wrap: wrap;
+}
+
+.spell-slot {
+  width: 42px;
+  height: 48px;
+  border: 3px dashed var(--text-light);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 900;
+  background: var(--gray-warm);
+}
+
+.spell-slot.filled {
+  border-style: solid;
+  border-color: var(--mint-dark);
+  background: #E8FAF3;
+}
+
+.spell-slot.correct {
+  border-color: #00B894;
+  background: #E8FAF3;
+  color: #00B894;
+}
+
+.spell-letters {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.spell-letter {
+  width: 42px;
+  height: 48px;
+  background: var(--coral);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 900;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.spell-letter:active { cursor: grabbing; transform: scale(1.1); }
+
+.spell-letter.used {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* Flashcard Game */
+.flashcard-container {
+  perspective: 1000px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.flashcard {
+  width: 300px;
+  height: 200px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+  cursor: pointer;
+}
+
+.flashcard.flipped {
+  transform: rotateY(180deg);
+}
+
+.flashcard-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  padding: 20px;
+}
+
+.flashcard-front {
+  background: linear-gradient(135deg, var(--mint), #d4f5e9);
+}
+
+.flashcard-back {
+  background: linear-gradient(135deg, var(--coral), #ffd4d8);
+  transform: rotateY(180deg);
+}
+
+.flashcard-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.flashcard-word {
+  font-size: 1.6rem;
+  font-weight: 900;
+}
+
+.flashcard-phonetic {
+  font-size: 0.85rem;
+  color: var(--text-mid);
+  margin-top: 4px;
+}
+
+.flashcard-chinese {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: white;
+}
+
+/* Listen & Choose */
+.listen-container {
+  background: var(--gray-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  padding: 24px;
+  text-align: center;
+}
+
+.listen-play-area {
+  margin-bottom: 24px;
+}
+
+.listen-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.listen-option {
+  border: 3px solid var(--text-light);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: white;
+}
+
+.listen-option:hover {
+  border-color: var(--mint-dark);
+}
+
+.listen-option.correct {
+  border-color: #00B894;
+  background: #E8FAF3;
+}
+
+.listen-option.wrong {
+  border-color: var(--coral);
+  background: #FFF5F5;
+  animation: shake 0.4s ease;
+}
+
+.listen-option-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.listen-option-text {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.listen-score {
+  font-size: 0.9rem;
+  color: var(--text-mid);
+  margin-top: 16px;
+}
+
+/* ============================================================
+   REVIEW VIEW
+   ============================================================ */
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.review-card {
+  background: var(--gray-card);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+}
+
+.review-card:active { transform: scale(0.97); }
+
+.review-card-image {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.review-card-word {
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+
+.review-card-status {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  font-size: 1rem;
+}
+
+.review-card.needs-practice {
+  border: 2px solid var(--coral);
+}
+
+/* ============================================================
+   MODAL (Teacher Login / Student Name)
+   ============================================================ */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-overlay.hidden { display: none; }
+
+.modal {
+  background: white;
+  border-radius: var(--radius);
+  padding: 32px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-title {
+  font-size: 1.4rem;
+  font-weight: 900;
+  margin-bottom: 8px;
+}
+
+.modal-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-mid);
+  margin-bottom: 20px;
+}
+
+.modal-input {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.1rem;
+  padding: 12px 16px;
+  border: 2px solid var(--text-light);
+  border-radius: var(--radius-sm);
+  width: 100%;
+  margin-bottom: 16px;
+  outline: none;
+  text-align: center;
+  transition: var(--transition);
+}
+
+.modal-input:focus { border-color: var(--mint-dark); }
+
+.student-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.student-item {
+  padding: 12px;
+  background: var(--gray-warm);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.student-item:hover { background: var(--mint); }
+
+.student-item.active {
+  background: var(--mint);
+  border: 2px solid var(--mint-dark);
+}
+
+/* ============================================================
+   TEACHER PANEL
+   ============================================================ */
+.teacher-panel {
+  background: var(--gray-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.teacher-panel h3 {
+  font-size: 1.2rem;
+  margin-bottom: 16px;
+  color: var(--coral-dark);
+}
+
+.unlock-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+}
+
+.unlock-card {
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--text-light);
+  text-align: center;
+  transition: var(--transition);
+}
+
+.unlock-card.unlocked {
+  border-color: #00B894;
+  background: #E8FAF3;
+}
+
+.unlock-card .status-icon {
+  font-size: 1.5rem;
+  margin-bottom: 4px;
+}
+
+.unlock-card .part-label {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.unlock-btn {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  padding: 6px 12px;
+}
+
+/* ============================================================
+   CONFETTI
+   ============================================================ */
+.confetti {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .header-title { font-size: 1.1rem; }
+  .word-text { font-size: 1.6rem; }
+  .word-image-area { height: 200px; }
+  .part-card { min-width: 80px; padding: 10px 6px; }
+  .part-name { font-size: 0.9rem; }
+  .tab-btn { font-size: 0.8rem; padding: 10px 4px; }
+  .spell-slot, .spell-letter { width: 36px; height: 42px; font-size: 1.2rem; }
+  .flashcard { width: 260px; height: 180px; }
+  .listen-options { grid-template-columns: 1fr; }
+  .game-select-btn { min-width: 90px; padding: 10px; }
+}
+
+@media (max-width: 480px) {
+  #app { padding: 8px; }
+  .word-content { padding: 14px; }
+  .audio-btn { font-size: 0.75rem; padding: 6px 10px; }
+  .spell-slot, .spell-letter { width: 32px; height: 38px; font-size: 1.1rem; }
+  .quiz-image { width: 160px; height: 160px; }
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-title">
+      <span>📘</span> 6A Unit 1: Weather Words
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-ghost btn-sm" id="studentSwitchBtn" onclick="showStudentModal()">👤 <span id="currentStudentName">Student</span></button>
+      <button class="btn btn-coral btn-sm" id="teacherBtn" onclick="showTeacherLogin()">🔑 Teacher</button>
+    </div>
+  </div>
+
+  <!-- PART SELECTOR -->
+  <div class="part-selector" id="partSelector"></div>
+
+  <!-- TAB NAVIGATION -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('learn')">📖 Learn</button>
+    <button class="tab-btn" onclick="switchTab('quiz')">✏️ Quiz</button>
+    <button class="tab-btn" onclick="switchTab('game')">🎮 Game</button>
+    <button class="tab-btn" onclick="switchTab('review')">🔄 Review</button>
+  </div>
+
+  <!-- LEARN VIEW -->
+  <div class="view-panel active" id="view-learn">
+    <div class="word-card">
+      <div class="word-image-area" id="learnImageArea">
+        <img id="learnImage" src="" alt="word image">
+        <div class="word-nav-overlay">
+          <button class="word-nav-btn" onclick="prevWord()">‹</button>
+          <button class="word-nav-btn" onclick="nextWord()">›</button>
+        </div>
+      </div>
+      <div class="word-content">
+        <div class="word-header">
+          <span class="word-text" id="learnWord"></span>
+          <span class="word-phonetic" id="learnPhonetic"></span>
+        </div>
+        <div class="audio-controls">
+          <button class="audio-btn" onclick="playFullWord()">🔊 Full Word</button>
+          <button class="audio-btn" onclick="playSyllables()">🔈 Syllables</button>
+          <button class="audio-btn" onclick="playCantonese()">🗣️ 廣東話</button>
+          <button class="audio-btn" onclick="playExample()">📢 Example</button>
+        </div>
+        <div class="word-chinese hidden" id="learnChinese" onclick="toggleChinese()"></div>
+        <div class="example-box">
+          <div class="example-en" id="learnExampleEn" onclick="playExample()"></div>
+          <div class="example-zh hidden" id="learnExampleZh"></div>
+        </div>
+        <div class="mastery-controls">
+          <button class="btn btn-primary btn-sm" style="flex:1" onclick="markMastered()">✅ Got it!</button>
+          <button class="btn btn-coral btn-sm" style="flex:1" onclick="markPractice()">❌ Need Practice</button>
+        </div>
+      </div>
+    </div>
+    <div class="word-dots" id="wordDots"></div>
+  </div>
+
+  <!-- QUIZ VIEW -->
+  <div class="view-panel" id="view-quiz">
+    <div class="quiz-container">
+      <div class="quiz-progress" id="quizProgress"></div>
+      <img class="quiz-image" id="quizImage" src="" alt="quiz">
+      <button class="btn btn-primary quiz-play-btn" onclick="playQuizWord()">🔊 Tap to Listen</button>
+      <div class="quiz-input-area">
+        <input type="text" class="quiz-input" id="quizInput" placeholder="Type the word..." onkeypress="checkQuizAnswer(event)">
+        <div class="quiz-feedback" id="quizFeedback"></div>
+      </div>
+      <button class="btn btn-ghost" onclick="nextQuizWord()">Skip →</button>
+    </div>
+  </div>
+
+  <!-- GAME VIEW -->
+  <div class="view-panel" id="view-game">
+    <div class="game-selector">
+      <div class="game-select-btn active" data-game="spell" onclick="switchGame('spell')">
+        <span class="game-select-icon">🔤</span>
+        <span class="game-select-name">Spelling Drag</span>
+      </div>
+      <div class="game-select-btn" data-game="flashcard" onclick="switchGame('flashcard')">
+        <span class="game-select-icon">🎴</span>
+        <span class="game-select-name">Flashcard</span>
+      </div>
+      <div class="game-select-btn" data-game="listen" onclick="switchGame('listen')">
+        <span class="game-select-icon">👂</span>
+        <span class="game-select-name">Listen & Choose</span>
+      </div>
+    </div>
+
+    <!-- Spelling Drag -->
+    <div id="game-spell" class="spell-container">
+      <img class="spell-image" id="spellImage" src="" alt="spell">
+      <div class="spell-hint" id="spellHint"></div>
+      <button class="btn btn-primary btn-sm" onclick="playCurrentSpellWord()">🔊</button>
+      <div class="spell-slots" id="spellSlots"></div>
+      <div class="spell-letters" id="spellLetters"></div>
+      <button class="btn btn-coral btn-sm" onclick="nextSpellWord()">Next Word →</button>
+    </div>
+
+    <!-- Flashcard -->
+    <div id="game-flashcard" class="spell-container" style="display:none">
+      <div class="flashcard-container">
+        <div class="flashcard" id="flashcard" onclick="flipFlashcard()">
+          <div class="flashcard-face flashcard-front">
+            <img class="flashcard-image" id="flashcardImage" src="" alt="flashcard">
+            <div style="font-size:0.9rem;color:var(--text-mid)">Tap to reveal</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-word" id="flashcardWord"></div>
+            <div class="flashcard-phonetic" id="flashcardPhonetic"></div>
+            <div class="flashcard-chinese" id="flashcardChinese"></div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:16px; display:flex; gap:10px; justify-content:center;">
+        <button class="btn btn-primary btn-sm" onclick="prevFlashcard()">‹ Prev</button>
+        <button class="btn btn-primary btn-sm" onclick="flipFlashcard()">🔄 Flip</button>
+        <button class="btn btn-primary btn-sm" onclick="nextFlashcard()">Next ›</button>
+      </div>
+    </div>
+
+    <!-- Listen & Choose -->
+    <div id="game-listen" class="listen-container" style="display:none">
+      <div class="quiz-progress" id="listenProgress"></div>
+      <div class="listen-play-area">
+        <button class="btn btn-primary" style="font-size:1.2rem;padding:14px 28px" onclick="playListenWord()">🔊 Tap to Listen</button>
+      </div>
+      <div class="listen-options" id="listenOptions"></div>
+      <div class="listen-score" id="listenScore"></div>
+    </div>
+  </div>
+
+  <!-- REVIEW VIEW -->
+  <div class="view-panel" id="view-review">
+    <div style="margin-bottom:12px; display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+      <span style="font-weight:700; font-size:0.9rem;">Filter:</span>
+      <button class="btn btn-primary btn-sm" onclick="loadReview('all')">All</button>
+      <button class="btn btn-coral btn-sm" onclick="loadReview('practice')">Need Practice</button>
+      <button class="btn btn-ghost btn-sm" onclick="loadReview('mastered')">Mastered</button>
+    </div>
+    <div class="review-grid" id="reviewGrid"></div>
+  </div>
+</div>
+
+<!-- STUDENT MODAL -->
+<div class="modal-overlay hidden" id="studentModal">
+  <div class="modal">
+    <div class="modal-title" id="studentModalTitle">👤 Choose Student</div>
+    <div class="modal-subtitle" id="studentModalSubtitle">Select your name or add a new one</div>
+    <div class="student-list" id="studentList"></div>
+    <input type="text" class="modal-input" id="newStudentInput" placeholder="Enter your name">
+    <button class="btn btn-primary" style="width:100%" onclick="addStudent()">Add Student</button>
+  </div>
+</div>
+
+<!-- TEACHER MODAL -->
+<div class="modal-overlay hidden" id="teacherModal">
+  <div class="modal">
+    <div class="modal-title">🔑 Teacher Login</div>
+    <div class="modal-subtitle">Enter password to access teacher controls</div>
+    <input type="password" class="modal-input" id="teacherPassword" placeholder="Password">
+    <button class="btn btn-coral" style="width:100%" onclick="teacherLogin()">Login</button>
+    <p id="loginError" style="color:var(--coral-dark); font-size:0.85rem; margin-top:8px; display:none;">Wrong password!</p>
+  </div>
+</div>
+
+<!-- TEACHER PANEL (shown after login) -->
+<div class="modal-overlay hidden" id="teacherPanelModal">
+  <div class="modal" style="max-width:500px;">
+    <div class="modal-title">🔑 Teacher Panel</div>
+    <div class="modal-subtitle">Unlock parts for students</div>
+    <div class="unlock-grid" id="unlockGrid"></div>
+    <div style="margin-top:20px; padding-top:16px; border-top:2px solid var(--text-light);">
+      <button class="btn btn-ghost" style="width:100%" onclick="changePassword()">🔒 Change Password</button>
+    </div>
+    <button class="btn btn-ghost" style="width:100%; margin-top:10px;" onclick="closeTeacherPanel()">Close</button>
+  </div>
+</div>
+
+<script src="words_data.js"></script>
+<script>
+/* ============================================================
+   GLOBAL STATE
+   ============================================================ */
+const TEACHER_PASSWORD = "teacher123";
+let currentPart = "Part 1";
+let currentWordIndex = 0;
+let currentStudent = localStorage.getItem('currentStudent') || null;
+let currentTab = 'learn';
+let currentGame = 'spell';
+
+// Game states
+let quizWords = [];
+let quizIndex = 0;
+let spellWords = [];
+let spellIndex = 0;
+let flashcardIndex = 0;
+let listenWords = [];
+let listenIndex = 0;
+let listenScore = 0;
+let listenTotal = 0;
+
+// ============================================================
+// INIT
+// ============================================================
+function init() {
+  // Load teacher password if changed
+  if (localStorage.getItem('teacherPassword')) {
+    // Note: we keep it in memory, not overriding the const
+  }
+  
+  // Get unlocked parts
+  let unlocked = JSON.parse(localStorage.getItem('unlockedParts') || '["Part 1"]');
+  
+  // Load student
+  if (!currentStudent) {
+    showStudentModal();
+  } else {
+    updateStudentDisplay();
+  }
+  
+  renderPartSelector();
+  loadPart(currentPart);
+  renderReview();
+}
+
+// ============================================================
+// UTILITY: Get words for current part
+// ============================================================
+function getPartWords(part) {
+  return WORDS_DATA.filter(w => w.part === part);
+}
+
+// ============================================================
+// IMAGE SOURCE RESOLUTION (local -> GitHub -> Unsplash)
+// ============================================================
+function getImageSrc(wordData) {
+  if (wordData.image && wordData.image.startsWith('http')) {
+    return wordData.image;
+  } else if (wordData.image && wordData.image !== "") {
+    return wordData.image; // relative path like "images/umbrella.jpg"
+  } else {
+    return `https://source.unsplash.com/400x300/?${encodeURIComponent(wordData.word)}`;
+  }
+}
+
+// ============================================================
+// AUDIO: TTS + MP3 fallback
+// ============================================================
+function speak(text, lang) {
+  if ('speechSynthesis' in window) {
+    speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = lang;
+    utterance.rate = 0.8;
+    
+    // Try to get a good voice
+    const voices = speechSynthesis.getVoices();
+    const preferred = voices.find(v => v.lang === lang);
+    if (preferred) utterance.voice = preferred;
+    
+    speechSynthesis.speak(utterance);
+  }
+}
+
+function playAudioFile(path, fallbackText, lang) {
+  if (path && path !== "") {
+    const audio = new Audio(path);
+    audio.onerror = () => speak(fallbackText, lang);
+    audio.play().catch(() => speak(fallbackText, lang));
+  } else {
+    speak(fallbackText, lang);
+  }
+}
+
+function playFullWord() {
+  const word = getCurrentWord();
+  playAudioFile(word.audioEn, word.word, 'en-GB');
+}
+
+function playSyllables() {
+  const word = getCurrentWord();
+  const syllables = word.syllables.split('-');
+  
+  if (word.audioEn && word.audioEn !== "") {
+    // If we have individual syllable recordings, play them
+    // Otherwise use TTS for each syllable
+    syllables.forEach((syl, i) => {
+      setTimeout(() => speak(syl, 'en-GB'), i * 600);
+    });
+  } else {
+    syllables.forEach((syl, i) => {
+      setTimeout(() => speak(syl, 'en-GB'), i * 600);
+    });
+  }
+}
+
+function playCantonese() {
+  const word = getCurrentWord();
+  playAudioFile(word.audioCanto, word.cantonese, 'zh-HK');
+}
+
+function playExample() {
+  const word = getCurrentWord();
+  speak(word.exampleEn, 'en-GB');
+}
+
+// ============================================================
+// STUDENT MANAGEMENT
+// ============================================================
+function getStudents() {
+  return JSON.parse(localStorage.getItem('students') || '[]');
+}
+
+function saveStudents(students) {
+  localStorage.setItem('students', JSON.stringify(students));
+}
+
+function showStudentModal() {
+  document.getElementById('studentModal').classList.remove('hidden');
+  renderStudentList();
+}
+
+function hideStudentModal() {
+  document.getElementById('studentModal').classList.add('hidden');
+}
+
+function renderStudentList() {
+  const students = getStudents();
+  const list = document.getElementById('studentList');
+  list.innerHTML = '';
+  
+  students.forEach(name => {
+    const div = document.createElement('div');
+    div.className = 'student-item' + (name === currentStudent ? ' active' : '');
+    div.textContent = name;
+    div.onclick = () => selectStudent(name);
+    list.appendChild(div);
+  });
+  
+  if (students.length === 0) {
+    list.innerHTML = '<p style="color:var(--text-mid); font-size:0.85rem;">No students yet. Add one below!</p>';
+  }
+}
+
+function addStudent() {
+  const input = document.getElementById('newStudentInput');
+  const name = input.value.trim();
+  if (!name) return;
+  
+  const students = getStudents();
+  if (!students.includes(name)) {
+    students.push(name);
+    saveStudents(students);
+  }
+  selectStudent(name);
+  input.value = '';
+}
+
+function selectStudent(name) {
+  currentStudent = name;
+  localStorage.setItem('currentStudent', name);
+  updateStudentDisplay();
+  hideStudentModal();
+  renderReview();
+}
+
+function updateStudentDisplay() {
+  document.getElementById('currentStudentName').textContent = currentStudent || 'Student';
+}
+
+// ============================================================
+// TEACHER MODE
+// ============================================================
+function showTeacherLogin() {
+  document.getElementById('teacherModal').classList.remove('hidden');
+  document.getElementById('teacherPassword').value = '';
+  document.getElementById('loginError').style.display = 'none';
+}
+
+function teacherLogin() {
+  const pwd = document.getElementById('teacherPassword').value;
+  if (pwd === TEACHER_PASSWORD) {
+    document.getElementById('teacherModal').classList.add('hidden');
+    showTeacherPanel();
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+  }
+}
+
+function showTeacherPanel() {
+  document.getElementById('teacherPanelModal').classList.remove('hidden');
+  renderUnlockGrid();
+}
+
+function closeTeacherPanel() {
+  document.getElementById('teacherPanelModal').classList.add('hidden');
+}
+
+function getUnlockedParts() {
+  return JSON.parse(localStorage.getItem('unlockedParts') || '["Part 1"]');
+}
+
+function setUnlockedParts(parts) {
+  localStorage.setItem('unlockedParts', JSON.stringify(parts));
+}
+
+function renderUnlockGrid() {
+  const parts = ['Part 1', 'Part 2', 'Part 3'];
+  const unlocked = getUnlockedParts();
+  const grid = document.getElementById('unlockGrid');
+  grid.innerHTML = '';
+  
+  parts.forEach(part => {
+    const isUnlocked = unlocked.includes(part);
+    const card = document.createElement('div');
+    card.className = 'unlock-card' + (isUnlocked ? ' unlocked' : '');
+    card.innerHTML = `
+      <div class="status-icon">${isUnlocked ? '🔓' : '🔒'}</div>
+      <div class="part-label">${part}</div>
+      <button class="btn ${isUnlocked ? 'btn-coral' : 'btn-primary'} btn-sm unlock-btn" 
+              onclick="togglePart('${part}')">
+        ${isUnlocked ? 'Lock' : 'Unlock'}
+      </button>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function togglePart(part) {
+  let unlocked = getUnlockedParts();
+  if (unlocked.includes(part)) {
+    unlocked = unlocked.filter(p => p !== part);
+    // Ensure at least Part 1 stays unlocked
+    if (unlocked.length === 0) unlocked = ['Part 1'];
+  } else {
+    unlocked.push(part);
+  }
+  setUnlockedParts(unlocked);
+  renderUnlockGrid();
+  renderPartSelector();
+}
+
+function changePassword() {
+  const newPwd = prompt('Enter new teacher password:');
+  if (newPwd && newPwd.length >= 4) {
+    // In a real app, this should be hashed. For simplicity, we use localStorage.
+    localStorage.setItem('teacherPassword', newPwd);
+    alert('Password changed! (Note: The default password in the code is still "teacher123". For full security, edit the TEACHER_PASSWORD constant in the HTML file.)');
+  }
+}
+
+// ============================================================
+// PART SELECTOR
+// ============================================================
+function renderPartSelector() {
+  const unlocked = getUnlockedParts();
+  const parts = ['Part 1', 'Part 2', 'Part 3'];
+  const container = document.getElementById('partSelector');
+  container.innerHTML = '';
+  
+  parts.forEach(part => {
+    const isUnlocked = unlocked.includes(part);
+    const partWords = getPartWords(part);
+    const masteredCount = partWords.filter(w => isMastered(w.word)).length;
+    
+    const card = document.createElement('div');
+    card.className = 'part-card' + 
+      (part === currentPart ? ' active' : '') + 
+      (!isUnlocked ? ' locked' : '');
+    
+    if (isUnlocked) {
+      card.onclick = () => loadPart(part);
+    }
+    
+    card.innerHTML = `
+      ${!isUnlocked ? '<span class="lock-icon">🔒</span>' : ''}
+      <div class="part-num">${part}</div>
+      <div class="part-name">${part.replace('Part ', 'P')}</div>
+      <div class="part-progress">${masteredCount}/${partWords.length} ✅</div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function loadPart(part) {
+  currentPart = part;
+  currentWordIndex = 0;
+  renderPartSelector();
+  renderWord();
+  if (currentTab === 'review') renderReview();
+}
+
+// ============================================================
+// MASTERY TRACKING
+// ============================================================
+function getMasteryData() {
+  const student = currentStudent || 'default';
+  return JSON.parse(localStorage.getItem(`mastery_${student}`) || '{}');
+}
+
+function setMastery(word, status) {
+  if (!currentStudent) return;
+  const data = getMasteryData();
+  data[word] = status;
+  localStorage.setItem(`mastery_${currentStudent}`, JSON.stringify(data));
+  renderPartSelector();
+}
+
+function isMastered(word) {
+  const data = getMasteryData();
+  return data[word] === 'mastered';
+}
+
+function isNeedsPractice(word) {
+  const data = getMasteryData();
+  return data[word] === 'practice';
+}
+
+function markMastered() {
+  const word = getCurrentWord();
+  setMastery(word.word, 'mastered');
+  nextWord();
+}
+
+function markPractice() {
+  const word = getCurrentWord();
+  setMastery(word.word, 'practice');
+  nextWord();
+}
+
+// ============================================================
+// LEARN VIEW
+// ============================================================
+function getCurrentWord() {
+  const partWords = getPartWords(currentPart);
+  return partWords[currentWordIndex] || partWords[0];
+}
+
+function renderWord() {
+  const word = getCurrentWord();
+  if (!word) return;
+  
+  document.getElementById('learnImage').src = getImageSrc(word);
+  document.getElementById('learnWord').textContent = word.word;
+  document.getElementById('learnPhonetic').textContent = word.phonetic;
+  document.getElementById('learnChinese').textContent = word.chinese;
+  document.getElementById('learnChinese').classList.add('hidden');
+  document.getElementById('learnExampleEn').textContent = `"${word.exampleEn}"`;
+  document.getElementById('learnExampleZh').textContent = word.exampleZh;
+  document.getElementById('learnExampleZh').classList.add('hidden');
+  
+  renderWordDots();
+}
+
+function renderWordDots() {
+  const partWords = getPartWords(currentPart);
+  const dots = document.getElementById('wordDots');
+  dots.innerHTML = '';
+  
+  partWords.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'word-dot' + (i === currentWordIndex ? ' active' : '');
+    dot.onclick = () => { currentWordIndex = i; renderWord(); };
+    dots.appendChild(dot);
+  });
+}
+
+function toggleChinese() {
+  document.getElementById('learnChinese').classList.toggle('hidden');
+  document.getElementById('learnExampleZh').classList.toggle('hidden');
+}
+
+function nextWord() {
+  const partWords = getPartWords(currentPart);
+  currentWordIndex = (currentWordIndex + 1) % partWords.length;
+  renderWord();
+}
+
+function prevWord() {
+  const partWords = getPartWords(currentPart);
+  currentWordIndex = (currentWordIndex - 1 + partWords.length) % partWords.length;
+  renderWord();
+}
+
+// ============================================================
+// TAB SWITCHING
+// ============================================================
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.toLowerCase().includes(tab.slice(0,3)));
+  });
+  document.querySelectorAll('.view-panel').forEach(panel => {
+    panel.classList.remove('active');
+  });
+  document.getElementById(`view-${tab}`).classList.add('active');
+  
+  // Initialize tab-specific content
+  if (tab === 'quiz') initQuiz();
+  if (tab === 'game') switchGame(currentGame);
+  if (tab === 'review') renderReview();
+}
+
+// ============================================================
+// QUIZ MODE
+// ============================================================
+function initQuiz() {
+  quizWords = getPartWords(currentPart);
+  quizIndex = 0;
+  loadQuizWord();
+}
+
+function loadQuizWord() {
+  if (quizIndex >= quizWords.length) {
+    quizIndex = 0;
+  }
+  const word = quizWords[quizIndex];
+  document.getElementById('quizImage').src = getImageSrc(word);
+  document.getElementById('quizProgress').textContent = `${quizIndex + 1} / ${quizWords.length}`;
+  
+  const input = document.getElementById('quizInput');
+  input.value = '';
+  input.classList.remove('correct', 'wrong');
+  document.getElementById('quizFeedback').textContent = '';
+  document.getElementById('quizFeedback').className = 'quiz-feedback';
+}
+
+function playQuizWord() {
+  const word = quizWords[quizIndex];
+  playAudioFile(word.audioEn, word.word, 'en-GB');
+}
+
+function checkQuizAnswer(e) {
+  if (e.key !== 'Enter') return;
+  const word = quizWords[quizIndex];
+  const input = document.getElementById('quizInput');
+  const feedback = document.getElementById('quizFeedback');
+  const userAnswer = input.value.trim().toLowerCase();
+  const correct = word.word.toLowerCase();
+  
+  if (userAnswer === correct) {
+    input.classList.add('correct');
+    input.classList.remove('wrong');
+    feedback.textContent = '✅ Correct!';
+    feedback.className = 'quiz-feedback correct';
+    setMastery(word.word, 'mastered');
+    setTimeout(() => { quizIndex++; loadQuizWord(); }, 1200);
+  } else {
+    input.classList.add('wrong');
+    input.classList.remove('correct');
+    feedback.textContent = `❌ Try again! Hint: ${correct.substring(0, 2)}...`;
+    feedback.className = 'quiz-feedback wrong';
+  }
+}
+
+function nextQuizWord() {
+  quizIndex++;
+  loadQuizWord();
+}
+
+// ============================================================
+// GAME SWITCHING
+// ============================================================
+function switchGame(game) {
+  currentGame = game;
+  document.querySelectorAll('.game-select-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.game === game);
+  });
+  
+  ['spell', 'flashcard', 'listen'].forEach(g => {
+    document.getElementById(`game-${g}`).style.display = g === game ? 'block' : 'none';
+  });
+  
+  if (game === 'spell') initSpellGame();
+  if (game === 'flashcard') initFlashcardGame();
+  if (game === 'listen') initListenGame();
+}
+
+// --- SPELLING DRAG GAME ---
+function initSpellGame() {
+  spellWords = getPartWords(currentPart);
+  spellIndex = 0;
+  loadSpellWord();
+}
+
+function loadSpellWord() {
+  if (spellIndex >= spellWords.length) spellIndex = 0;
+  const word = spellWords[spellIndex];
+  
+  document.getElementById('spellImage').src = getImageSrc(word);
+  document.getElementById('spellHint').textContent = `${word.syllables} • ${word.chinese}`;
+  
+  const slotsContainer = document.getElementById('spellSlots');
+  const lettersContainer = document.getElementById('spellLetters');
+  slotsContainer.innerHTML = '';
+  lettersContainer.innerHTML = '';
+  
+  const letters = word.word.split('');
+  const shuffled = [...letters].sort(() => Math.random() - 0.5);
+  
+  letters.forEach(() => {
+    const slot = document.createElement('div');
+    slot.className = 'spell-slot';
+    slotsContainer.appendChild(slot);
+  });
+  
+  shuffled.forEach(letter => {
+    const btn = document.createElement('button');
+    btn.className = 'spell-letter';
+    btn.textContent = letter.toUpperCase();
+    btn.draggable = true;
+    btn.dataset.letter = letter;
+    
+    // Drag events
+    btn.ondragstart = (e) => {
+      e.dataTransfer.setData('text', letter);
+      e.dataTransfer.setData('source', 'letter');
+    };
+    
+    // Touch events for mobile
+    btn.ontouchstart = (e) => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      btn.style.position = 'fixed';
+      btn.style.left = touch.clientX - 21 + 'px';
+      btn.style.top = touch.clientY - 24 + 'px';
+      btn.style.zIndex = '1000';
+      btn.dataset.dragging = 'true';
+    };
+    
+    btn.ontouchmove = (e) => {
+      e.preventDefault();
+      if (btn.dataset.dragging === 'true') {
+        const touch = e.touches[0];
+        btn.style.left = touch.clientX - 21 + 'px';
+        btn.style.top = touch.clientY - 24 + 'px';
+      }
+    };
+    
+    btn.ontouchend = (e) => {
+      e.preventDefault();
+      btn.style.position = '';
+      btn.style.left = '';
+      btn.style.top = '';
+      btn.style.zIndex = '';
+      btn.dataset.dragging = 'false';
+      
+      // Check if dropped near a slot
+      const slots = document.querySelectorAll('.spell-slot');
+      slots.forEach((slot, si) => {
+        const rect = slot.getBoundingClientRect();
+        const touch = e.changedTouches[0];
+        if (touch.clientX >= rect.left && touch.clientX <= rect.right &&
+            touch.clientY >= rect.top && touch.clientY <= rect.bottom) {
+          placeLetter(slot, btn, si);
+        }
+      });
+    };
+    
+    lettersContainer.appendChild(btn);
+  });
+  
+  // Add drop zones to slots (for desktop drag)
+  const slots = document.querySelectorAll('.spell-slot');
+  slots.forEach((slot, index) => {
+    slot.ondragover = (e) => e.preventDefault();
+    slot.ondrop = (e) => {
+      e.preventDefault();
+      const letter = e.dataTransfer.getData('text');
+      const sourceBtn = document.querySelector(`.spell-letter[data-letter="${letter}"]:not(.used)`);
+      if (sourceBtn) placeLetter(slot, sourceBtn, index);
+    };
+  });
+}
+
+function placeLetter(slot, btn, index) {
+  const word = spellWords[spellIndex];
+  const correctLetter = word.word[index];
+  
+  if (btn.dataset.letter === correctLetter) {
+    slot.textContent = correctLetter.toUpperCase();
+    slot.classList.add('filled', 'correct');
+    btn.classList.add('used');
+    playAudioFile('', correctLetter, 'en-GB');
+    
+    // Check if complete
+    const allFilled = document.querySelectorAll('.spell-slot.correct').length === word.word.length;
+    if (allFilled) {
+      setTimeout(() => {
+        slot.style.transition = 'all 0.5s';
+        confetti();
+        // Play full word
+        playAudioFile(word.audioEn, word.word, 'en-GB');
+      }, 300);
+    }
+  } else {
+    slot.classList.add('wrong');
+    setTimeout(() => slot.classList.remove('wrong'), 400);
+    playAudioFile('', 'wrong', 'en-GB');
+  }
+}
+
+function playCurrentSpellWord() {
+  const word = spellWords[spellIndex];
+  playAudioFile(word.audioEn, word.word, 'en-GB');
+}
+
+function nextSpellWord() {
+  spellIndex++;
+  loadSpellWord();
+}
+
+// --- FLASHCARD GAME ---
+function initFlashcardGame() {
+  // Filter to words marked "needs practice" first, then all
+  const partWords = getPartWords(currentPart);
+  const practiceWords = partWords.filter(w => isNeedsPractice(w.word));
+  flashcardWords = practiceWords.length > 0 ? practiceWords : partWords;
+  flashcardIndex = 0;
+  loadFlashcard();
+}
+
+let flashcardWords = [];
+
+function loadFlashcard() {
+  if (flashcardIndex >= flashcardWords.length) flashcardIndex = 0;
+  if (flashcardIndex < 0) flashcardIndex = flashcardWords.length - 1;
+  
+  const word = flashcardWords[flashcardIndex];
+  document.getElementById('flashcardImage').src = getImageSrc(word);
+  document.getElementById('flashcardWord').textContent = word.word;
+  document.getElementById('flashcardPhonetic').textContent = word.phonetic;
+  document.getElementById('flashcardChinese').textContent = word.chinese;
+  
+  // Reset flip
+  document.getElementById('flashcard').classList.remove('flipped');
+}
+
+function flipFlashcard() {
+  document.getElementById('flashcard').classList.toggle('flipped');
+}
+
+function nextFlashcard() {
+  flashcardIndex++;
+  loadFlashcard();
+}
+
+function prevFlashcard() {
+  flashcardIndex--;
+  loadFlashcard();
+}
+
+// --- LISTEN & CHOOSE GAME ---
+function initListenGame() {
+  listenWords = getPartWords(currentPart);
+  listenIndex = 0;
+  listenScore = 0;
+  listenTotal = 0;
+  loadListenQuestion();
+}
+
+function loadListenQuestion() {
+  if (listenIndex >= listenWords.length) {
+    // Round complete
+    listenIndex = 0;
+    // Shuffle for next round
+    listenWords = [...listenWords].sort(() => Math.random() - 0.5);
+  }
+  
+  const correct = listenWords[listenIndex];
+  document.getElementById('listenProgress').textContent = `Score: ${listenScore}/${listenTotal}`;
+  
+  // Get 3 random wrong options from other words
+  const others = listenWords.filter(w => w.word !== correct.word);
+  const shuffled = [...others].sort(() => Math.random() - 0.5).slice(0, 3);
+  const options = [correct, ...shuffled].sort(() => Math.random() - 0.5);
+  
+  const container = document.getElementById('listenOptions');
+  container.innerHTML = '';
+  
+  // Randomly choose display mode: text, image, or mixed
+  const mode = Math.random() < 0.33 ? 'text' : (Math.random() < 0.5 ? 'image' : 'mixed');
+  
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'listen-option';
+    
+    if (mode === 'text') {
+      btn.innerHTML = `<span class="listen-option-text">${opt.word}</span>`;
+    } else if (mode === 'image') {
+      btn.innerHTML = `<img class="listen-option-image" src="${getImageSrc(opt)}" alt="${opt.word}"><span class="listen-option-text">${opt.word}</span>`;
+    } else {
+      // Mixed: some text, some image
+      if (Math.random() < 0.5) {
+        btn.innerHTML = `<span class="listen-option-text">${opt.word}</span>`;
+      } else {
+        btn.innerHTML = `<img class="listen-option-image" src="${getImageSrc(opt)}" alt="${opt.word}">`;
+      }
+    }
+    
+    btn.onclick = () => selectListenOption(btn, opt, correct);
+    container.appendChild(btn);
+  });
+}
+
+function playListenWord() {
+  const correct = listenWords[listenIndex];
+  playAudioFile(correct.audioEn, correct.word, 'en-GB');
+}
+
+function selectListenOption(btn, selected, correct) {
+  listenTotal++;
+  if (selected.word === correct.word) {
+    btn.classList.add('correct');
+    listenScore++;
+    setTimeout(() => { listenIndex++; loadListenQuestion(); }, 800);
+  } else {
+    btn.classList.add('wrong');
+    // Highlight correct answer
+    document.querySelectorAll('.listen-option').forEach(opt => {
+      if (opt.textContent.trim() === correct.word || opt.textContent.includes(correct.word)) {
+        if (opt.querySelector('.listen-option-text')?.textContent === correct.word) {
+          opt.classList.add('correct');
+        }
+      }
+    });
+    // Also check by image alt
+    document.querySelectorAll('.listen-option img').forEach(img => {
+      if (img.alt === correct.word) {
+        img.parentElement.classList.add('correct');
+      }
+    });
+    setTimeout(() => { listenIndex++; loadListenQuestion(); }, 1500);
+  }
+  document.getElementById('listenScore').textContent = `Score: ${listenScore}/${listenTotal}`;
+}
+
+// ============================================================
+// REVIEW VIEW
+// ============================================================
+function renderReview() {
+  loadReview('all');
+}
+
+function loadReview(filter) {
+  const partWords = getPartWords(currentPart);
+  const grid = document.getElementById('reviewGrid');
+  grid.innerHTML = '';
+  
+  let words = partWords;
+  if (filter === 'practice') {
+    words = partWords.filter(w => isNeedsPractice(w.word));
+  } else if (filter === 'mastered') {
+    words = partWords.filter(w => isMastered(w.word));
+  }
+  
+  if (words.length === 0) {
+    grid.innerHTML = '<p style="color:var(--text-mid); text-align:center; width:100%;">No words in this category yet.</p>';
+    return;
+  }
+  
+  words.forEach(word => {
+    const card = document.createElement('div');
+    card.className = 'review-card' + (isNeedsPractice(word.word) ? ' needs-practice' : '');
+    
+    const status = isMastered(word.word) ? '✅' : (isNeedsPractice(word.word) ? '❌' : '');
+    
+    card.innerHTML = `
+      <img class="review-card-image" src="${getImageSrc(word)}" alt="${word.word}">
+      <div class="review-card-word">${word.word}</div>
+      <div class="review-card-status">${status}</div>
+    `;
+    
+    card.onclick = () => {
+      // Find this word's index in the part and go to learn view
+      const idx = getPartWords(currentPart).findIndex(w => w.word === word.word);
+      if (idx >= 0) {
+        currentWordIndex = idx;
+        switchTab('learn');
+        renderWord();
+      }
+    };
+    
+    grid.appendChild(card);
+  });
+}
+
+// ============================================================
+// CONFETTI EFFECT
+// ============================================================
+function confetti() {
+  const canvas = document.createElement('canvas');
+  canvas.className = 'confetti';
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  document.body.appendChild(canvas);
+  
+  const ctx = canvas.getContext('2d');
+  const particles = [];
+  const colors = ['#A8E6CF', '#FF8B94', '#FFD93D', '#6BCB77', '#4D96FF', '#FF6B6B'];
+  
+  for (let i = 0; i < 60; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      size: Math.random() * 8 + 4,
+      speedY: Math.random() * 3 + 2,
+      speedX: Math.random() * 4 - 2,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      rotation: Math.random() * 360,
+      rotationSpeed: Math.random() * 10 - 5
+    });
+  }
+  
+  let frame = 0;
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    frame++;
+    
+    particles.forEach(p => {
+      p.y += p.speedY;
+      p.x += p.speedX;
+      p.rotation += p.rotationSpeed;
+      
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rotation * Math.PI / 180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+      ctx.restore();
+    });
+    
+    if (frame < 120) {
+      requestAnimationFrame(animate);
+    } else {
+      canvas.remove();
+    }
+  }
+  animate();
+}
+
+// ============================================================
+// VOICE LOADING (for better TTS)
+// ============================================================
+if ('speechSynthesis' in window) {
+  speechSynthesis.onvoiceschanged = () => {
+    // Voices loaded
+  };
+}
+
+// ============================================================
+// START
+// ============================================================
+init();
+</script>
+</body>
+</html>
