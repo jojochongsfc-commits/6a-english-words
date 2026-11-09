@@ -6,7 +6,7 @@ const wordsData = [
     phonetic: "/'kru:əl/",
     chinese: "殘酷的",
     cantoneseTTS: "殘酷的",
-    image: "",
+    image: "images/cruel.webp",
     example: { en: "The cruel king ruled the land.", zh: "殘酷的國王統治這片土地。" },
     audioEn: "",
     audioCanto: ""
@@ -18,7 +18,7 @@ const wordsData = [
     phonetic: "/'kjʊəriəs/",
     chinese: "好奇的",
     cantoneseTTS: "好奇的",
-    image: "",
+    image: "images/curious.webp",
     example: { en: "The cat is very curious.", zh: "這隻貓非常好奇。" },
     audioEn: "",
     audioCanto: ""
@@ -30,7 +30,7 @@ const wordsData = [
     phonetic: "/fiəs/",
     chinese: "兇狠的",
     cantoneseTTS: "兇狠的",
-    image: "",
+    image: "images/fierce.webp",
     example: { en: "A fierce dog barked at me.", zh: "一隻兇狠的狗對我叫。" },
     audioEn: "",
     audioCanto: ""
@@ -42,7 +42,7 @@ const wordsData = [
     phonetic: "/'gri:di/",
     chinese: "貪心的",
     cantoneseTTS: "貪心的",
-    image: "",
+    image: "images/greedy.webp",
     example: { en: "He is too greedy for money.", zh: "他對金錢太貪心了。" },
     audioEn: "",
     audioCanto: ""
@@ -54,7 +54,7 @@ const wordsData = [
     phonetic: "/'ləʊnli/",
     chinese: "寂寞的",
     cantoneseTTS: "寂寞的",
-    image: "",
+    image: "images/lonely.webp",
     example: { en: "She feels lonely at home.", zh: "她在家感到寂寞。" },
     audioEn: "",
     audioCanto: ""
@@ -66,7 +66,7 @@ const wordsData = [
     phonetic: "/ə'bi:diənt/",
     chinese: "聽話的",
     cantoneseTTS: "聽話的",
-    image: "",
+    image: "images/obedient.webp",
     example: { en: "An obedient student listens to the teacher.", zh: "聽話的學生會聽老師的話。" },
     audioEn: "",
     audioCanto: ""
@@ -78,7 +78,7 @@ const wordsData = [
     phonetic: "/praʊd/",
     chinese: "驕傲的/自豪的",
     cantoneseTTS: "驕傲的/自豪的",
-    image: "",
+    image: "images/proud.webp",
     example: { en: "I am proud of you.", zh: "我為你感到自豪。" },
     audioEn: "",
     audioCanto: ""
@@ -90,7 +90,7 @@ const wordsData = [
     phonetic: "/'selfiʃ/",
     chinese: "自私的",
     cantoneseTTS: "自私的",
-    image: "",
+    image: "images/selfish.webp",
     example: { en: "It is selfish to take all the toys.", zh: "把玩具全拿走是很自私的。" },
     audioEn: "",
     audioCanto: ""
@@ -102,7 +102,7 @@ const wordsData = [
     phonetic: "/'wɪkɪd/",
     chinese: "邪惡的",
     cantoneseTTS: "邪惡的",
-    image: "",
+    image: "images/wicked.webp",
     example: { en: "The wicked witch cast a spell.", zh: "邪惡的女巫施了咒語。" },
     audioEn: "",
     audioCanto: ""
@@ -114,7 +114,7 @@ const wordsData = [
     phonetic: "/waɪz/",
     chinese: "聰明的",
     cantoneseTTS: "聰明的",
-    image: "",
+    image: "images/wise.webp",
     example: { en: "An old owl is wise.", zh: "老貓頭鷹是聰明的。" },
     audioEn: "",
     audioCanto: ""
